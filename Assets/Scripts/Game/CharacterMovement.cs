@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Events;
+using UnityEngine.InputSystem;
 
 [RequireComponent(typeof(Character))]
 [RequireComponent(typeof(Rigidbody2D))]
@@ -49,9 +50,10 @@ public class CharacterMovement : MonoBehaviour
         #endregion
     }
 
-    public void InputX(float x)
+    public void InputAxis(InputAction.CallbackContext ctx)
     {
-        if(x == 0) // if no input Decellerate
+        Vector2 input = ctx.ReadValue<Vector2>();
+        if(input.x == 0) // if no input Decellerate
         {
             if (_rb.velocity.x == 0) return; // don't deccelerate when not moving
 
@@ -61,16 +63,12 @@ public class CharacterMovement : MonoBehaviour
         }
         else // Accelerate
         {
-            if (_rb.velocity.x * x > MaxSpeed) return; // don't accelerate over max speed
+            if (_rb.velocity.x * input.x > MaxSpeed) return; // don't accelerate over max speed
 
-            float speed = _rb.velocity.x + Acceleration * MaxSpeed * x * Time.deltaTime;
+            float speed = _rb.velocity.x + Acceleration * MaxSpeed * input.x * Time.deltaTime;
 
             _rb.velocity = new Vector2(speed, _rb.velocity.y);
         }
-    }
-    public void InputY(float y)
-    {
-
     }
     private void TouchGround(Collider2D ground)
     {
