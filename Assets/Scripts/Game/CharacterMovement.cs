@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Events;
 using UnityEngine.InputSystem;
+using UnityEngine.Windows;
 
 [RequireComponent(typeof(Character))]
 [RequireComponent(typeof(Rigidbody2D))]
@@ -11,7 +12,7 @@ public class CharacterMovement : MonoBehaviour
 {
     #region Required Components
     [HideInInspector]
-    public Character Controller;
+    public Character Character;
     private Rigidbody2D _rb;
     #endregion
 
@@ -24,7 +25,9 @@ public class CharacterMovement : MonoBehaviour
     public float Decceleration;
 
     [Header("Jumping")]
-
+    public float JumpForce;
+    [Range(0f, 1f)]
+    public float JumpGravity;
 
     [Header("Refs")]
     [SerializeField]
@@ -41,7 +44,7 @@ public class CharacterMovement : MonoBehaviour
     private void Awake()
     {
         #region Required Components
-        Controller = GetComponent<Character>();
+        Character = GetComponent<Character>();
         _rb = GetComponent<Rigidbody2D>();
         #endregion
 
@@ -50,26 +53,24 @@ public class CharacterMovement : MonoBehaviour
         #endregion
     }
 
-    public void InputAxis(InputAction.CallbackContext ctx)
+    public void Decelerate()
     {
-        Vector2 input = ctx.ReadValue<Vector2>();
-        if(input.x == 0) // if no input Decellerate
-        {
-            if (_rb.velocity.x == 0) return; // don't deccelerate when not moving
+        if (_rb.velocity.x == 0) return; // don't deccelerate when not moving
 
-            float speed = _rb.velocity.x - Decceleration * MaxSpeed * Mathf.Sign(_rb.velocity.x) * Time.deltaTime;
+        float speed = _rb.velocity.x - Decceleration * MaxSpeed * Mathf.Sign(_rb.velocity.x) * Time.deltaTime;
 
-            _rb.velocity = new Vector2(speed, _rb.velocity.y);
-        }
-        else // Accelerate
-        {
-            if (_rb.velocity.x * input.x > MaxSpeed) return; // don't accelerate over max speed
-
-            float speed = _rb.velocity.x + Acceleration * MaxSpeed * input.x * Time.deltaTime;
-
-            _rb.velocity = new Vector2(speed, _rb.velocity.y);
-        }
+        _rb.velocity = new Vector2(speed, _rb.velocity.y);
     }
+    public void Move(int direction)
+    {
+        Debug.Log(direction);
+        if (_rb.velocity.x * direction > MaxSpeed) return; // don't accelerate over max speed
+
+        float speed = _rb.velocity.x + Acceleration * MaxSpeed * direction * Time.deltaTime;
+
+        _rb.velocity = new Vector2(speed, _rb.velocity.y);
+    }
+
     private void TouchGround(Collider2D ground)
     {
         if(_hasTouchedGround == false)
@@ -80,8 +81,30 @@ public class CharacterMovement : MonoBehaviour
         _hasTouchedGround = true;
     }
 
+    public void Jump()
+    {
+        if(_hasTouchedGround)
+        {
+            _hasTouchedGround = false;
 
+            _rb.velocity += new Vector2(0, JumpForce);
 
-
-
+            _rb.gravityScale = JumpGravity;
+        }
+    }
+    public void HoldJump()
+    {
+        if(_rb.velocity.y > 0) // only apply reduced gravity if going up
+        {
+            _rb.gravityScale = JumpGravity;
+        }
+        else
+        {
+            _rb.gravityScale = 1;
+        }
+    }
+    public void RealeaseJump()
+    {
+        _rb.gravityScale = 1;
+    }
 }
