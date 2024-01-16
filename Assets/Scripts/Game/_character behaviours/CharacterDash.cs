@@ -79,6 +79,8 @@ public class CharacterDash: MonoBehaviour
 
         if(_cooldown)
         {
+            Character.OnDroped();
+
             Dashing = true;
 
             // disable collisions with players

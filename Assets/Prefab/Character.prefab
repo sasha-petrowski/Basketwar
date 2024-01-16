@@ -343,6 +343,7 @@ GameObject:
   - component: {fileID: 6391622116464960307}
   - component: {fileID: 8833675099329505532}
   - component: {fileID: 1758548939651793343}
+  - component: {fileID: 1435956206778239574}
   - component: {fileID: 838588469312074922}
   - component: {fileID: 3075890982924113532}
   - component: {fileID: 2374363361669070884}
@@ -365,6 +366,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
+  - {fileID: 6904514600880306533}
   - {fileID: 9136898033632732175}
   - {fileID: 2034451524342120367}
   - {fileID: 1228563414116332843}
@@ -496,7 +498,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   Character: {fileID: 0}
   Feedback: {fileID: 0}
-  JumpForce: 10
+  JumpForce: 12
   JumpGravity: 0.5
   _groundCollider: {fileID: 7724032741249412013}
 --- !u!114 &6391622116464960307
@@ -551,21 +553,26 @@ MonoBehaviour:
   Feedback: {fileID: 0}
   _offset: {x: 0.75, y: 0}
   Radius: 0.75
-  _filter:
-    useTriggers: 0
-    useLayerMask: 1
-    useDepth: 0
-    useOutsideDepth: 0
-    useNormalAngle: 0
-    useOutsideNormalAngle: 0
-    layerMask:
-      serializedVersion: 2
-      m_Bits: 8
-    minDepth: 0
-    maxDepth: 0
-    minNormalAngle: 0
-    maxNormalAngle: 0
   _punchSprite: {fileID: 3182944952156981755}
+--- !u!114 &1435956206778239574
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3828413195900781235}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5c16698604c62944597cc55dcb714fbe, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Character: {fileID: 0}
+  Feedback: {fileID: 0}
+  _offset: {x: 1, y: 0}
+  Radius: 1
+  _thowForce: {x: 20, y: 10}
+  _grabTransform: {fileID: 6904514600880306533}
+  Grabbed: {fileID: 0}
 --- !u!114 &838588469312074922
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -611,7 +618,9 @@ MonoBehaviour:
     m_NumColorKeys: 2
     m_NumAlphaKeys: 2
   _stunKO: 6
+  _collider: {fileID: 6152593852491807186}
   CanMoveCount: 0
+  GrabbedBy: {fileID: 0}
 --- !u!114 &3075890982924113532
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -5797,6 +5806,37 @@ ParticleSystemRenderer:
   m_MeshWeighting2: 1
   m_MeshWeighting3: 1
   m_MaskInteraction: 0
+--- !u!1 &4227522042227676486
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 6904514600880306533}
+  m_Layer: 0
+  m_Name: GrabTransform
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &6904514600880306533
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4227522042227676486}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 1, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 6615427599860117699}
+  m_RootOrder: -1
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &4325532702924331000
 GameObject:
   m_ObjectHideFlags: 0

@@ -1,11 +1,17 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
+[RequireComponent(typeof(Rigidbody2D))]
 public class Character: MonoBehaviour
 {
+    #region Required Components
+    private Rigidbody2D _rb;
+    #endregion
+
     static int s_playerCount;
 
     [Header("Health")]
@@ -20,16 +26,26 @@ public class Character: MonoBehaviour
     [SerializeField]
     private int _stunKO = 6;
 
-    private int _health;
+    [Header("Grab")]
+    [SerializeField]
+    private Collider2D _collider;
 
+
+    private int _health;
 
     public bool CanMove => CanMoveCount == 0;
     [HideInInspector]
     public int CanMoveCount;
+    [HideInInspector]
+    public CharacterGrab GrabbedBy;
 
 
     private void Awake()
     {
+        #region Required Components
+        _rb = GetComponent<Rigidbody2D>();
+        #endregion
+
         s_playerCount++;
 
         name = this.GetType().Name + " " + s_playerCount;
@@ -60,5 +76,24 @@ public class Character: MonoBehaviour
         float width = _health / (float)_maxHealth;
         _healthBar.transform.localScale = new Vector3(width, 1, 1);
         _healthBar.color = _healthColor.Evaluate(width);
+    }
+    public void OnGrabed(CharacterGrab graber)
+    {
+        GrabbedBy = graber;
+
+        _rb.isKinematic = true;
+        _collider.isTrigger = true;
+    }
+    public void OnDroped()
+    {
+        if (GrabbedBy == null) return;
+
+        CharacterGrab tmp = GrabbedBy;
+        GrabbedBy = null;
+        tmp.Drop();
+
+        _rb.isKinematic = false;
+        // wait a tiny bit not to collide with thrower
+        StartCoroutine(Utility.WaitFor(0.05f, () => _collider.isTrigger = false));
     }
 }

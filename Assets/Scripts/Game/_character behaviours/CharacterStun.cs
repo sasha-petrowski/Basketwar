@@ -65,6 +65,8 @@ public class CharacterStun: MonoBehaviour
     }
     public void Stun(float stun)
     {
+        if(TryGetComponent(out CharacterGrab grab)) grab.Drop();
+
         if (!_stunned)
         {
             Character.CanMoveCount++;

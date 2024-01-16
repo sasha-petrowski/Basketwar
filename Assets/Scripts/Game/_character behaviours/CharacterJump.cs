@@ -67,7 +67,9 @@ public class CharacterJump: MonoBehaviour
     {
         if (!Character.CanMove) return;
 
-        if(_hasTouchedGround | _groundCollider.TouchCount > 0)
+        Character.OnDroped();
+
+        if (_hasTouchedGround | _groundCollider.TouchCount > 0)
         {
             _hasTouchedGround = false;
 

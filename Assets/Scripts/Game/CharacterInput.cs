@@ -89,7 +89,7 @@ public class CharacterInput : MonoBehaviour
         }
         else if (ctx.canceled)
         {
-            Debug.Log("B Up");
+            Debug.Log("Y Up");
             YUp?.Invoke();
 
             if (YHold != null) _continuousInputs -= YHold.Invoke;

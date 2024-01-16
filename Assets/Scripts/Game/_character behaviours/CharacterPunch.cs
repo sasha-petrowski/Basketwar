@@ -25,8 +25,6 @@ public class CharacterPunch: MonoBehaviour
     [SerializeField]
     private Vector2 _offset;
     public float Radius;
-    [SerializeField]
-    private ContactFilter2D _filter;
 
     [Header("Refs")]
     [SerializeField]
@@ -37,9 +35,9 @@ public class CharacterPunch: MonoBehaviour
 
     private void OnDrawGizmosSelected()
     {
+        Gizmos.color = Color.red;
         Gizmos.DrawWireSphere(transform.position + Offset, Radius);
     }
-
     private void Awake()
     {
         #region Required Components
@@ -58,7 +56,6 @@ public class CharacterPunch: MonoBehaviour
 
         #endregion
     }
-
     private void OnDirectionChange(int direction)
     {
         if (direction != 0) _nonZeroDirection = direction;
@@ -70,7 +67,6 @@ public class CharacterPunch: MonoBehaviour
             reference.Character.OnHit();
         }
     }
-
     private void Punch()
     {
         if (!Character.CanMove) return;
