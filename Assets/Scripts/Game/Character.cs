@@ -91,6 +91,7 @@ public class Character: MonoBehaviour
         GrabbedBy = null;
         tmp.Drop();
 
+        _rb.gravityScale = 1;
         // wait a tiny bit not to collide with thrower
         StartCoroutine(Utility.WaitFor(0.05f, () => _collider.isTrigger = false));
     }
