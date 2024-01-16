@@ -8,6 +8,7 @@ using UnityEngine.Windows;
 
 [RequireComponent(typeof(Character))]
 [RequireComponent(typeof(Rigidbody2D))]
+[RequireComponent(typeof(CharacterInput))]
 public class CharacterMovement : MonoBehaviour
 {
     #region Required Components
@@ -31,7 +32,7 @@ public class CharacterMovement : MonoBehaviour
 
     [Header("Refs")]
     [SerializeField]
-    private ColliderEvent _groundCollider;
+    private ColliderUtility _groundCollider;
 
     [Header("Feedback Events")]
     public UnityEvent OnTouchGround;
@@ -49,6 +50,17 @@ public class CharacterMovement : MonoBehaviour
         #endregion
 
         #region Subscribe to listeners
+        //Inputs
+        CharacterInput input = GetComponent<CharacterInput>();
+
+        input.MoveAction += Move;
+
+        input.ADown += Jump;
+        input.AHold += HoldJump;
+        input.AUp += RealeaseJump;
+
+
+        // Game
         _groundCollider.OnTriggerEnter += TouchGround;
         #endregion
     }
@@ -63,7 +75,12 @@ public class CharacterMovement : MonoBehaviour
     }
     public void Move(int direction)
     {
-        Debug.Log(direction);
+        if (direction == 0) // Decelerate if no move Input
+        {
+            Decelerate();
+            return;
+        }
+
         if (_rb.velocity.x * direction > MaxSpeed) return; // don't accelerate over max speed
 
         float speed = _rb.velocity.x + Acceleration * MaxSpeed * direction * Time.deltaTime;
@@ -83,7 +100,7 @@ public class CharacterMovement : MonoBehaviour
 
     public void Jump()
     {
-        if(_hasTouchedGround)
+        if(_hasTouchedGround | _groundCollider.TouchCount > 0)
         {
             _hasTouchedGround = false;
 

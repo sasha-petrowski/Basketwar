@@ -5,21 +5,12 @@ using UnityEngine;
 using UnityEngine.Events;
 using UnityEngine.InputSystem;
 
-[RequireComponent(typeof(CharacterMovement))]
 public class CharacterInput : MonoBehaviour
 {
-    #region Required Components
-    [HideInInspector]
-    public CharacterMovement Movement;
-    #endregion
-
-    private void Awake()
-    {
-        #region Required Components
-        Movement = GetComponent<CharacterMovement>();
-        #endregion
-
-    }
+    public Action ADown, BDown, XDown, YDown;
+    public Action AHold, BHold, XHold, YHold;
+    public Action AUp, BUp, XUp, YUp;
+    public Action<int> MoveAction;
 
     private Action _continuousInputs;
     private int _moveDirection;
@@ -30,8 +21,7 @@ public class CharacterInput : MonoBehaviour
         _continuousInputs?.Invoke(); // Continous inputs like Holding the jump button
 
         // Movement
-        if (_moveDirection == 0) Movement.Decelerate();
-        else Movement.Move(_moveDirection);
+        MoveAction.Invoke(_moveDirection);
     }
 
     public void InputAxis(InputAction.CallbackContext ctx)
@@ -45,16 +35,16 @@ public class CharacterInput : MonoBehaviour
         if (ctx.started)
         {
             Debug.Log("A Down");
-            Movement.Jump();
+            ADown.Invoke();
 
-            _continuousInputs += Movement.HoldJump;
+            _continuousInputs += AHold.Invoke;
         }
         else if(ctx.canceled)
         {
             Debug.Log("A Up");
-            Movement.RealeaseJump();
+            AUp.Invoke();
 
-            _continuousInputs -= Movement.HoldJump;
+            _continuousInputs -= AHold.Invoke;
         }
     }
     public void InputB(InputAction.CallbackContext ctx)
@@ -62,10 +52,16 @@ public class CharacterInput : MonoBehaviour
         if (ctx.started)
         {
             Debug.Log("B Down");
+            BDown.Invoke();
+
+            _continuousInputs += BHold.Invoke;
         }
         else if (ctx.canceled)
         {
             Debug.Log("B Up");
+            BUp.Invoke();
+
+            _continuousInputs -= BHold.Invoke;
         }
     }
     public void InputX(InputAction.CallbackContext ctx)
@@ -73,10 +69,16 @@ public class CharacterInput : MonoBehaviour
         if (ctx.started)
         {
             Debug.Log("X Down");
+            XDown.Invoke();
+
+            _continuousInputs += XHold.Invoke;
         }
         else if (ctx.canceled)
         {
             Debug.Log("X Up");
+            XUp.Invoke();
+
+            _continuousInputs -= XHold.Invoke;
         }
     }
     public void InputY(InputAction.CallbackContext ctx)
@@ -84,10 +86,16 @@ public class CharacterInput : MonoBehaviour
         if (ctx.started)
         {
             Debug.Log("Y Down");
+            YDown.Invoke();
+
+            _continuousInputs += YHold.Invoke;
         }
         else if (ctx.canceled)
         {
-            Debug.Log("Y Up");
+            Debug.Log("B Up");
+            YUp.Invoke();
+
+            _continuousInputs -= YHold.Invoke;
         }
     }
 
