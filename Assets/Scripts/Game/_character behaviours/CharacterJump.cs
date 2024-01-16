@@ -22,7 +22,6 @@ public class CharacterJump: MonoBehaviour
 
     [Header("Jumping")]
     public float JumpForce;
-    [Range(0f, 1f)]
     public float JumpGravity;
 
     [Header("Refs")]

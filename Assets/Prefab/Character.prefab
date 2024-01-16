@@ -247,7 +247,7 @@ MonoBehaviour:
   Character: {fileID: 0}
   Feedback: {fileID: 0}
   JumpForce: 10
-  JumpGravity: 0
+  JumpGravity: 0.5
   _groundCollider: {fileID: 7724032741249412013}
 --- !u!114 &6391622116464960307
 MonoBehaviour:
