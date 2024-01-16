@@ -480,9 +480,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   Character: {fileID: 0}
   Feedback: {fileID: 0}
-  MaxSpeed: 6
-  Acceleration: 2
-  Decceleration: 4
+  MaxSpeed: 14
+  Acceleration: 4
+  Decceleration: 3
   _groundCollider: {fileID: 7724032741249412013}
 --- !u!114 &1246370286469063501
 MonoBehaviour:
@@ -498,8 +498,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   Character: {fileID: 0}
   Feedback: {fileID: 0}
-  JumpForce: 11
-  JumpGravity: 0.5
+  JumpForce: 12
+  JumpGravity: 0.3
   _groundCollider: {fileID: 7724032741249412013}
 --- !u!114 &6391622116464960307
 MonoBehaviour:
@@ -515,7 +515,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   Character: {fileID: 0}
   Feedback: {fileID: 0}
-  Velocity: 25
+  Velocity: 50
   Duration: 0.2
   Cooldown: 3
   StunLevel: 3
