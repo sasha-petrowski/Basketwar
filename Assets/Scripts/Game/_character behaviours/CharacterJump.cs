@@ -74,6 +74,7 @@ public class CharacterJump: MonoBehaviour
             _rb.velocity += new Vector2(0, JumpForce);
 
             _rb.gravityScale = JumpGravity;
+            _rb.drag = 0;
         }
     }
     public void HoldJump()
@@ -83,10 +84,12 @@ public class CharacterJump: MonoBehaviour
         if (_rb.velocity.y > 0) // only apply reduced gravity if going up
         {
             _rb.gravityScale = JumpGravity;
+            _rb.drag = 0;
         }
         else
         {
             _rb.gravityScale = 1;
+            _rb.drag = 1;
         }
     }
     public void RealeaseJump()
@@ -94,5 +97,6 @@ public class CharacterJump: MonoBehaviour
         if (!Character.CanMove) return;
 
         _rb.gravityScale = 1;
+        _rb.drag = 1;
     }
 }
