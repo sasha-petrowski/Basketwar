@@ -32,7 +32,6 @@ public class CharacterGrab : MonoBehaviour
 
     private int _nonZeroDirection = 1;
 
-    [HideInInspector]
     public Character Grabbed;
     public Vector3 Offset => new Vector3(_offset.x * _nonZeroDirection, _offset.y, 1);
     public Vector2 ThowForce => new Vector2(_thowForce.x * _nonZeroDirection, _thowForce.y);
@@ -42,7 +41,10 @@ public class CharacterGrab : MonoBehaviour
         Gizmos.color = Color.green;
         Gizmos.DrawWireSphere(transform.position + Offset, Radius);
     }
-
+    private void Update()
+    {
+        if(Grabbed != null) Grabbed.transform.position = _grabTransform.position;
+    }
     private void Awake()
     {
         #region Required Components
@@ -87,7 +89,7 @@ public class CharacterGrab : MonoBehaviour
 
         foreach (RaycastHit2D r in results)
         {
-            TryGrab(r.collider);
+            if(TryGrab(r.collider)) break;
         }
     }
     private void Throw()
@@ -99,7 +101,8 @@ public class CharacterGrab : MonoBehaviour
     public void Drop()
     {
         if (Grabbed == null) return;
-        
+
+        Grabbed.transform.SetParent(transform.parent);
         Character tmp = Grabbed;
         Grabbed = null;
         tmp.OnDroped();

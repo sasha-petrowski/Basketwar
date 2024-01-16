@@ -36,7 +36,7 @@ public class Character: MonoBehaviour
     public bool CanMove => CanMoveCount == 0;
     [HideInInspector]
     public int CanMoveCount;
-    [HideInInspector]
+
     public CharacterGrab GrabbedBy;
 
 
@@ -81,7 +81,6 @@ public class Character: MonoBehaviour
     {
         GrabbedBy = graber;
 
-        _rb.isKinematic = true;
         _collider.isTrigger = true;
     }
     public void OnDroped()
@@ -92,7 +91,6 @@ public class Character: MonoBehaviour
         GrabbedBy = null;
         tmp.Drop();
 
-        _rb.isKinematic = false;
         // wait a tiny bit not to collide with thrower
         StartCoroutine(Utility.WaitFor(0.05f, () => _collider.isTrigger = false));
     }
