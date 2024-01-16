@@ -70,7 +70,7 @@ public class CharacterGrab : MonoBehaviour
     private bool TryGrab(Collider2D collider)
     {
         Debug.Log("TryGrab : " + collider.transform.parent.parent.name);
-        if (collider.TryGetComponent(out CharacterReference reference) && reference.Character != Character && Character.TryGetComponent(out CharacterGrab grab) && grab.Grabbed == null)
+        if (collider.TryGetComponent(out CharacterReference reference) && reference.Character != Character && reference.Character.TryGetComponent(out CharacterGrab grab) && grab.Grabbed == null)
         {
             Grabbed = reference.Character;
             Grabbed.transform.SetParent(_grabTransform);
