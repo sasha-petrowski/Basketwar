@@ -36,6 +36,7 @@ public class CharacterStun: MonoBehaviour
     float _maxStun;
     float _stunLevel;
 
+    public bool Stunned => _stunned;
     private void Awake()
     {
         #region Required Components

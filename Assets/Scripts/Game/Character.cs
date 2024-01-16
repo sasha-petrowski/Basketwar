@@ -56,17 +56,15 @@ public class Character: MonoBehaviour
     }
     public void OnHit()
     {
+        if (TryGetComponent(out CharacterStun stun) && stun.Stunned) return; // Don't take damage when stunned
+
         _health -= 1;
 
         if(_health == 0)
         {
             _health = _maxHealth;
 
-            if(TryGetComponent(out CharacterStun stun))
-            {
-                stun.Stun(_stunKO);
-            }
-
+            stun?.Stun(_stunKO);
         }
         UpdateHealthBar();
     }

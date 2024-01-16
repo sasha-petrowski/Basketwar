@@ -570,6 +570,7 @@ MonoBehaviour:
   Feedback: {fileID: 0}
   _offset: {x: 1, y: 0}
   Radius: 1
+  StunLevel: 16
   _thowForce: {x: 20, y: 10}
   _grabTransform: {fileID: 6904514600880306533}
   Grabbed: {fileID: 0}

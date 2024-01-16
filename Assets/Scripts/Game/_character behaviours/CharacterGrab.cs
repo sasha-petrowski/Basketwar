@@ -21,6 +21,7 @@ public class CharacterGrab : MonoBehaviour
     [SerializeField]
     private Vector2 _offset;
     public float Radius;
+    public int StunLevel = 12;
 
     [Header("Throw")]
     [SerializeField]
@@ -76,6 +77,11 @@ public class CharacterGrab : MonoBehaviour
             Grabbed.transform.SetParent(_grabTransform);
             Grabbed.transform.position = _grabTransform.position;
             Grabbed.OnGrabed(this);
+
+            if(Grabbed.TryGetComponent(out CharacterStun stun) && stun.Stunned)
+            {
+                stun.Stun(StunLevel);
+            }
 
             Debug.Log("Grabbed : " + Grabbed.name);
 
