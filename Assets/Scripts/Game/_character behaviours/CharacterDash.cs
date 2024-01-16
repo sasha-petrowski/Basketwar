@@ -26,6 +26,9 @@ public class CharacterDash: MonoBehaviour
     public float Duration;
     public float Cooldown;
 
+    [Header("Dash Stun")]
+    public int StunLevel;
+
     [Header("Refs")]
     [SerializeField]
     private ColliderUtility _playerCollider;
@@ -63,8 +66,9 @@ public class CharacterDash: MonoBehaviour
 
     public void DashCollision(Collider2D collision)
     {
-        if(Dashing)
+        if(Dashing && collision.TryGetComponent(out CharacterReference reference) && reference.Character.TryGetComponent(out CharacterStun stun))
         {
+            stun.Stun(StunLevel);
             Debug.Log("Dash Collision");
         }
     }

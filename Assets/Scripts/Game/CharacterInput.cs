@@ -65,6 +65,7 @@ public class CharacterInput : MonoBehaviour
         if (ctx.started)
         {
             Debug.Log("X Down");
+
             XDown?.Invoke();
 
             if (XHold != null) _continuousInputs += XHold.Invoke;

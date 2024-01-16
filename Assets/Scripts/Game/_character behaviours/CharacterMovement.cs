@@ -34,7 +34,6 @@ public class CharacterMovement : MonoBehaviour
 
 
     // Logic variables
-    private bool _hasTouchedGround;
     private int _direction;
 
     private void Awake()
@@ -54,9 +53,7 @@ public class CharacterMovement : MonoBehaviour
 
     private void FixedUpdate()
     {
-        if (!Character.CanMove) return;
-
-        if (_direction == 0) // Decelerate if no move Input
+        if (_direction == 0 | !Character.CanMove) // Decelerate if no move Input or can't move
         {
             Decelerate();
         }
@@ -71,18 +68,14 @@ public class CharacterMovement : MonoBehaviour
     }
     public void Decelerate()
     {
-        float speed;
-        if (_rb.velocity.x == 0)
+        if(_groundCollider.TouchCount > 0)
         {
-            speed = 0;
-        }
-        else
-        {
-            speed = _rb.velocity.x - Decceleration * MaxSpeed * Mathf.Sign(_rb.velocity.x) * Time.deltaTime;
-        }
+            if (_rb.velocity.x == 0) return;
 
+            float speed = _rb.velocity.x - Decceleration * MaxSpeed * Mathf.Sign(_rb.velocity.x) * Time.deltaTime;
 
-        _rb.velocity = new Vector2(speed, _rb.velocity.y);
+            _rb.velocity = new Vector2(speed, _rb.velocity.y);
+        }
     }
     public void Move()
     {
