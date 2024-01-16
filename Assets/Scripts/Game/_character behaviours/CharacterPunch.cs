@@ -73,6 +73,8 @@ public class CharacterPunch: MonoBehaviour
 
     private void Punch()
     {
+        if (!Character.CanMove) return;
+
         _punchSprite.transform.localPosition = Offset;
 
         RaycastHit2D[] results = Physics2D.CircleCastAll(transform.position, Radius, Offset, 1, Layers.Player);
