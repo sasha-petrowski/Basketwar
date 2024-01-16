@@ -551,8 +551,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   Character: {fileID: 0}
   Feedback: {fileID: 0}
-  _offset: {x: 0.75, y: 0}
-  Radius: 0.75
+  _offset: {x: 0.8, y: 0}
+  Radius: 1
   _punchSprite: {fileID: 3182944952156981755}
 --- !u!114 &1435956206778239574
 MonoBehaviour:
@@ -568,8 +568,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   Character: {fileID: 0}
   Feedback: {fileID: 0}
-  _offset: {x: 1, y: 0}
-  Radius: 1
+  _offset: {x: 0.8, y: 0}
+  Radius: 1.2
   StunLevel: 16
   _thowForce: {x: 20, y: 10}
   _grabTransform: {fileID: 6904514600880306533}
@@ -622,6 +622,7 @@ MonoBehaviour:
   _collider: {fileID: 6152593852491807186}
   CanMoveCount: 0
   GrabbedBy: {fileID: 0}
+  Team: 0
 --- !u!114 &3075890982924113532
 MonoBehaviour:
   m_ObjectHideFlags: 0

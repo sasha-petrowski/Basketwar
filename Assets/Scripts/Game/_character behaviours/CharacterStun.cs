@@ -61,7 +61,7 @@ public class CharacterStun: MonoBehaviour
 
             UpdateStunBar();
 
-            if (_stunLevel == 0) LeaveStun();
+            if (_stunLevel == 0) EndStun();
         }
     }
     public void Stun(float stun)
@@ -90,9 +90,9 @@ public class CharacterStun: MonoBehaviour
     {
         _stunLevel--;
 
-        if (_stunLevel <= 0) LeaveStun();
+        if (_stunLevel <= 0) EndStun();
     }
-    public void LeaveStun()
+    public void EndStun()
     {
         if (_stunned) Character.CanMoveCount--;
 

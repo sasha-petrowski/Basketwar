@@ -36,9 +36,10 @@ public class Character: MonoBehaviour
     public bool CanMove => CanMoveCount == 0;
     [HideInInspector]
     public int CanMoveCount;
-
+    [HideInInspector]
     public CharacterGrab GrabbedBy;
-
+    [HideInInspector]
+    public Team Team;
 
     private void Awake()
     {
@@ -52,6 +53,7 @@ public class Character: MonoBehaviour
 
         _health = _maxHealth;
 
+        Team = s_playerCount % 2 == 1 ? Team.Blue : Team.Red;
         GetComponent<SpriteRenderer>().color = s_playerCount % 2 == 1 ? Color.blue : Color.red;
     }
     public void OnHit()
@@ -92,5 +94,19 @@ public class Character: MonoBehaviour
         _rb.gravityScale = 1;
         // wait a tiny bit not to collide with thrower
         StartCoroutine(Utility.WaitFor(0.05f, () => _collider.isTrigger = false));
+    }
+
+    public void OnGoal()
+    {
+        if (TryGetComponent(out CharacterStun stun))
+        {
+            stun.EndStun();
+        }
+        if (TryGetComponent(out CharacterGrab grab))
+        {
+            grab.Drop();
+        }
+        transform.position = new Vector3(0, 5, 0);
+        _rb.velocity = Vector3.zero;
     }
 }

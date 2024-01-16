@@ -33,6 +33,7 @@ public class CharacterGrab : MonoBehaviour
 
     private int _nonZeroDirection = 1;
 
+    [HideInInspector]
     public Character Grabbed;
     public Vector3 Offset => new Vector3(_offset.x * _nonZeroDirection, _offset.y, 1);
     public Vector2 ThowForce => new Vector2(_thowForce.x * _nonZeroDirection, _thowForce.y);
