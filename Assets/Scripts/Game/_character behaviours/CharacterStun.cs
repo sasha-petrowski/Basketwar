@@ -67,6 +67,8 @@ public class CharacterStun: MonoBehaviour
     {
         if(TryGetComponent(out CharacterGrab grab)) grab.Drop();
 
+        _rb.gravityScale = 1;
+
         if (!_stunned)
         {
             Character.CanMoveCount++;
