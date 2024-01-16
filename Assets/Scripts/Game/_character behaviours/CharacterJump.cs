@@ -9,21 +9,16 @@ using UnityEngine.Windows;
 [RequireComponent(typeof(Character))]
 [RequireComponent(typeof(Rigidbody2D))]
 [RequireComponent(typeof(CharacterInput))]
-public class CharacterMovement : MonoBehaviour
+[RequireComponent(typeof(CharacterFeedback))]
+public class CharacterJump: MonoBehaviour
 {
     #region Required Components
     [HideInInspector]
     public Character Character;
+    [HideInInspector]
+    public CharacterFeedback Feedback;
     private Rigidbody2D _rb;
     #endregion
-
-    [Header("Horizontal Movement")]
-    [Min(1)]
-    public float MaxSpeed;
-    [Min(1)]
-    public float Acceleration;
-    [Min(1)]
-    public float Decceleration;
 
     [Header("Jumping")]
     public float JumpForce;
@@ -34,11 +29,6 @@ public class CharacterMovement : MonoBehaviour
     [SerializeField]
     private ColliderUtility _groundCollider;
 
-    [Header("Feedback Events")]
-    public UnityEvent OnTouchGround;
-
-
-
     // Logic variables
     private bool _hasTouchedGround;
 
@@ -46,14 +36,13 @@ public class CharacterMovement : MonoBehaviour
     {
         #region Required Components
         Character = GetComponent<Character>();
+        Feedback = GetComponent<CharacterFeedback>();
         _rb = GetComponent<Rigidbody2D>();
         #endregion
 
         #region Subscribe to listeners
         //Inputs
         CharacterInput input = GetComponent<CharacterInput>();
-
-        input.MoveAction += Move;
 
         input.ADown += Jump;
         input.AHold += HoldJump;
@@ -65,34 +54,11 @@ public class CharacterMovement : MonoBehaviour
         #endregion
     }
 
-    public void Decelerate()
-    {
-        if (_rb.velocity.x == 0) return; // don't deccelerate when not moving
-
-        float speed = _rb.velocity.x - Decceleration * MaxSpeed * Mathf.Sign(_rb.velocity.x) * Time.deltaTime;
-
-        _rb.velocity = new Vector2(speed, _rb.velocity.y);
-    }
-    public void Move(int direction)
-    {
-        if (direction == 0) // Decelerate if no move Input
-        {
-            Decelerate();
-            return;
-        }
-
-        if (_rb.velocity.x * direction > MaxSpeed) return; // don't accelerate over max speed
-
-        float speed = _rb.velocity.x + Acceleration * MaxSpeed * direction * Time.deltaTime;
-
-        _rb.velocity = new Vector2(speed, _rb.velocity.y);
-    }
-
     private void TouchGround(Collider2D ground)
     {
         if(_hasTouchedGround == false)
         {
-            OnTouchGround?.Invoke();
+            Feedback.OnTouchGround?.Invoke();
         }
 
         _hasTouchedGround = true;
@@ -100,6 +66,8 @@ public class CharacterMovement : MonoBehaviour
 
     public void Jump()
     {
+        if (!Character.CanMove) return;
+
         if(_hasTouchedGround | _groundCollider.TouchCount > 0)
         {
             _hasTouchedGround = false;
@@ -111,7 +79,9 @@ public class CharacterMovement : MonoBehaviour
     }
     public void HoldJump()
     {
-        if(_rb.velocity.y > 0) // only apply reduced gravity if going up
+        if (!Character.CanMove) return;
+
+        if (_rb.velocity.y > 0) // only apply reduced gravity if going up
         {
             _rb.gravityScale = JumpGravity;
         }
@@ -122,6 +92,8 @@ public class CharacterMovement : MonoBehaviour
     }
     public void RealeaseJump()
     {
+        if (!Character.CanMove) return;
+
         _rb.gravityScale = 1;
     }
 }

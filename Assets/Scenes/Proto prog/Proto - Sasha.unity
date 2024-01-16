@@ -347,7 +347,7 @@ GameObject:
   - component: {fileID: 1438759834}
   - component: {fileID: 1438759833}
   - component: {fileID: 1438759835}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: -- Ground --
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -475,7 +475,6 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1930682634}
-  - component: {fileID: 1930682633}
   m_Layer: 0
   m_Name: -- Proto only --
   m_TagString: Untagged
@@ -483,18 +482,6 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!114 &1930682633
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1930682632}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: ccf0adc4b2889a047ae6a3c52c6f8e1b, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!4 &1930682634
 Transform:
   m_ObjectHideFlags: 0

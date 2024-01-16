@@ -14,6 +14,7 @@ public static class Layers
     public readonly static int Water = 1 << 4;
     public readonly static int UI = 1 << 5;
     public readonly static int Terrain = 1 << 6;
+    public readonly static int TerrainOnly = 1 << 7;
 }
 
 public static class LayersUtility

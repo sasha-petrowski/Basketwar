@@ -3,14 +3,18 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
-[RequireComponent(typeof(CharacterMovement))]
 public class Character: MonoBehaviour
 {
+    static int s_playerCount;
+
+    public bool CanMove => CanMoveCount == 0;
     [HideInInspector]
-    public CharacterMovement Controller;
+    public int CanMoveCount;
 
     private void Awake()
     {
-        Controller = GetComponent<CharacterMovement>();
+        s_playerCount++;
+
+        GetComponent<SpriteRenderer>().color = s_playerCount % 2 == 1 ? Color.blue : Color.red;
     }
 }
