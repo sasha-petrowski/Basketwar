@@ -38,6 +38,7 @@ public class CharacterGrab : MonoBehaviour
     public Vector3 Offset => new Vector3(_offset.x * _nonZeroDirection, _offset.y, 1);
     public Vector2 ThowForce => new Vector2(_thowForce.x * _nonZeroDirection, _thowForce.y);
 
+    private Coroutine _animCoroutine;
     private void OnDrawGizmosSelected()
     {
         Gizmos.color = Color.green;
@@ -84,6 +85,9 @@ public class CharacterGrab : MonoBehaviour
                 stun.Stun(StunLevel);
             }
 
+            int catchLayer = Character.Animator.GetLayerIndex(AnimationLayers.Carry);
+            Character.Animator.SetLayerWeight(catchLayer, 1);
+
             Debug.Log("Grabbed : " + Grabbed.name);
 
             return true;
@@ -92,6 +96,14 @@ public class CharacterGrab : MonoBehaviour
     }
     private void Grab()
     {
+        int grabLayer = Character.Animator.GetLayerIndex(AnimationLayers.Grab);
+        Character.Animator.SetLayerWeight(grabLayer, 1);
+
+        Character.Animator.Play(AnimationState.Grab, grabLayer, 0f);
+
+        if (_animCoroutine != null) StopCoroutine(_animCoroutine);
+        _animCoroutine = StartCoroutine(Utility.WaitFor(.5f, () => Character.Animator.SetLayerWeight(grabLayer, 0)));
+
         RaycastHit2D[] results = Physics2D.CircleCastAll(transform.position, Radius, Offset, 1, Layers.Player);
 
         foreach (RaycastHit2D r in results)
@@ -101,12 +113,23 @@ public class CharacterGrab : MonoBehaviour
     }
     private void Throw()
     {
+        int throwLayer = Character.Animator.GetLayerIndex(AnimationLayers.Throw);
+        Character.Animator.SetLayerWeight(throwLayer, 1);
+
+        Character.Animator.Play(AnimationState.Throw, throwLayer, 0.5f);
+
+        if (_animCoroutine != null) StopCoroutine(_animCoroutine);
+        _animCoroutine = StartCoroutine(Utility.WaitFor(.5f, () => Character.Animator.SetLayerWeight(throwLayer, 0)));
+
         Character tmp = Grabbed;
         Drop();
         tmp.GetComponent<Rigidbody2D>().velocity = _rb.velocity + ThowForce;
     }
     public void Drop()
     {
+        int catchLayer = Character.Animator.GetLayerIndex(AnimationLayers.Carry);
+        Character.Animator.SetLayerWeight(catchLayer, 0);
+
         if (Grabbed == null) return;
 
         Grabbed.transform.SetParent(transform.parent);
@@ -116,9 +139,10 @@ public class CharacterGrab : MonoBehaviour
     }
     private void GrabOrThrow()
     {
+        if (!Character.CanMove) return;
+
         if (Grabbed == null)
         {
-            if (!Character.CanMove) return;
 
             Debug.Log("Grab");
             Grab();

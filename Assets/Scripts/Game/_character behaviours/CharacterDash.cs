@@ -79,6 +79,7 @@ public class CharacterDash: MonoBehaviour
 
         if(_cooldown)
         {
+            Character.Animator.SetBool(AnimationVar.IsDashing, true);
             Character.OnDroped();
 
             Dashing = true;
@@ -103,6 +104,7 @@ public class CharacterDash: MonoBehaviour
     }
     private void EndDash()
     {
+        Character.Animator.SetBool(AnimationVar.IsDashing, false);
         Dashing = false;
 
         // reactive collisions with players

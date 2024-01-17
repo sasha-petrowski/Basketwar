@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.ComponentModel;
 using UnityEngine;
 using UnityEngine.Events;
 using UnityEngine.InputSystem;
@@ -28,9 +29,17 @@ public class CharacterMovement : MonoBehaviour
     [Min(1)]
     public float Decceleration;
 
+    [Header("3D")]
+    [SerializeField]
+    private int _displayAngle;
+    [SerializeField]
+    private float _turnSpeed = 10f;
+
     [Header("Refs")]
     [SerializeField]
     private ColliderUtility _groundCollider;
+    [SerializeField]
+    private Transform _rotateModel;
 
 
     // Logic variables
@@ -68,6 +77,7 @@ public class CharacterMovement : MonoBehaviour
     }
     public void Decelerate()
     {
+        Character.Animator.SetBool(AnimationVar.IsRunning, false);
         if(_groundCollider.TouchCount > 0)
         {
             if (_rb.velocity.x == 0) return;
@@ -79,6 +89,12 @@ public class CharacterMovement : MonoBehaviour
     }
     public void Move()
     {
+        float angle = _rotateModel.eulerAngles.y;
+        float target = _displayAngle * _direction;
+
+        _rotateModel.eulerAngles = new Vector3(0, Mathf.LerpAngle(angle, target, Time.deltaTime * _turnSpeed), 0);
+
+        Character.Animator.SetBool(AnimationVar.IsRunning, true);
         if (_rb.velocity.x * _direction > MaxSpeed) return; // don't accelerate over max speed
 
         float speed = _rb.velocity.x + Acceleration * MaxSpeed * _direction * Time.deltaTime;

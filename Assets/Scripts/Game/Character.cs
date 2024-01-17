@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using TMPro;
 using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.InputSystem;
@@ -17,18 +18,17 @@ public class Character: MonoBehaviour
     [Header("Health")]
     [SerializeField]
     private int _maxHealth = 10;
-    [SerializeField]
-    private SpriteRenderer _healthBar;
-    [SerializeField]
-    private Gradient _healthColor;
 
     [Header("KO")]
     [SerializeField]
     private int _stunKO = 6;
-
-    [Header("Grab")]
+    
+    [Header("Refs")]
+    public Animator Animator;
     [SerializeField]
     private Collider2D _collider;
+    [SerializeField]
+    private TextMeshPro _playerTag;
 
 
     private int _health;
@@ -54,7 +54,9 @@ public class Character: MonoBehaviour
         _health = _maxHealth;
 
         Team = s_playerCount % 2 == 1 ? Team.Blue : Team.Red;
-        GetComponent<SpriteRenderer>().color = s_playerCount % 2 == 1 ? Color.blue : Color.red;
+
+        _playerTag.text = "P." + s_playerCount;
+        _playerTag.color = s_playerCount % 2 == 1 ? Color.blue : Color.red;
     }
     public void OnHit()
     {
@@ -68,15 +70,8 @@ public class Character: MonoBehaviour
 
             stun?.Stun(_stunKO);
         }
-        UpdateHealthBar();
     }
 
-    private void UpdateHealthBar()
-    {
-        float width = _health / (float)_maxHealth;
-        _healthBar.transform.localScale = new Vector3(width, 1, 1);
-        _healthBar.color = _healthColor.Evaluate(width);
-    }
     public void OnGrabed(CharacterGrab graber)
     {
         GrabbedBy = graber;

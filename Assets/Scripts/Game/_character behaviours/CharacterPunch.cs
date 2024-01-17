@@ -26,13 +26,10 @@ public class CharacterPunch: MonoBehaviour
     private Vector2 _offset;
     public float Radius;
 
-    [Header("Refs")]
-    [SerializeField]
-    private SpriteRenderer _punchSprite;
-
     private int _nonZeroDirection = 1;
     public Vector3 Offset => new Vector3(_offset.x * _nonZeroDirection, _offset.y, 1);
 
+    Coroutine _animCoroutine;
     private void OnDrawGizmosSelected()
     {
         Gizmos.color = Color.red;
@@ -71,7 +68,13 @@ public class CharacterPunch: MonoBehaviour
     {
         if (!Character.CanMove) return;
 
-        _punchSprite.transform.localPosition = Offset;
+        int punchLayer = Character.Animator.GetLayerIndex(AnimationLayers.Bonk);
+        Character.Animator.SetLayerWeight(punchLayer, 1);
+
+        Character.Animator.Play(AnimationState.Bonk, punchLayer, 0.4f);
+
+        if(_animCoroutine != null) StopCoroutine(_animCoroutine);
+        _animCoroutine = StartCoroutine(Utility.WaitFor(.5f, () => Character.Animator.SetLayerWeight(punchLayer, 0)));
 
         RaycastHit2D[] results = Physics2D.CircleCastAll(transform.position, Radius, Offset, 1, Layers.Player);
 
