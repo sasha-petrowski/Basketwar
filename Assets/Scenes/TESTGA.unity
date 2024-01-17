@@ -345,6 +345,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: CameraPivot
       objectReference: {fileID: 0}
+    - target: {fileID: 5120946104343412258, guid: 0781cbe1efd209f46b0eb8978b4852cd, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 6233793073500509724, guid: 0781cbe1efd209f46b0eb8978b4852cd, type: 3}
       propertyPath: m_RootOrder
       value: 5
@@ -412,7 +416,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 9088990181694021892, guid: 29c96621b02f1c445a0c9641b08ec79e, type: 3}
       propertyPath: m_LocalPosition.x
-      value: -3.368313
+      value: -3.429
       objectReference: {fileID: 0}
     - target: {fileID: 9088990181694021892, guid: 29c96621b02f1c445a0c9641b08ec79e, type: 3}
       propertyPath: m_LocalPosition.y
@@ -420,7 +424,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 9088990181694021892, guid: 29c96621b02f1c445a0c9641b08ec79e, type: 3}
       propertyPath: m_LocalPosition.z
-      value: -1.1909256
+      value: -0.857
       objectReference: {fileID: 0}
     - target: {fileID: 9088990181694021892, guid: 29c96621b02f1c445a0c9641b08ec79e, type: 3}
       propertyPath: m_LocalRotation.w
