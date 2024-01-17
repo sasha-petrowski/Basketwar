@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using UnityEngine.SceneManagement;
 
 public class MAINMENU : MonoBehaviour
 {
@@ -9,6 +10,7 @@ public class MAINMENU : MonoBehaviour
     public GameObject MENU;
     public Button Quit;
     public Button Play;
+    public string Final;
     void Start()
     {
         
@@ -22,7 +24,7 @@ public class MAINMENU : MonoBehaviour
 
     public void PlayGame()
     {
-        MENU.SetActive(false);
+        SceneManager.LoadScene(Final);
     }
 
     public void Exit()
