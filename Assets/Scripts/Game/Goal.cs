@@ -4,7 +4,8 @@ using UnityEngine;
 
 public class Goal : MonoBehaviour
 {
-    public Team Team;
+    [SerializeField]
+    private Team _team;
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
@@ -22,9 +23,15 @@ public class Goal : MonoBehaviour
 
     private void ScoreCharacter(Character character)
     {
-        if (character.Team == Team)
+        if (character.Team == _team)
         {
-            GameManager.Instance.AddScore(1, Team);
+            Team otherTeam = (Team)(((int)_team + 1) % 2);
+            GameManager.Instance.AddScore(1, otherTeam);
+
+            if (GameManager.Instance.Overtime) 
+            {
+                GameManager.Instance.WinGame(otherTeam);
+            }
         }
         character.OnGoal();
     }
