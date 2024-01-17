@@ -24,22 +24,28 @@ public class Character: MonoBehaviour
     private int _stunKO = 6;
     
     [Header("Refs")]
-    public Animator Animator;
     [SerializeField]
     private Collider2D _collider;
     [SerializeField]
     private TextMeshPro _playerTag;
 
+    public List<GameObject> Models;
+
+    [HideInInspector]
+    public Animator Animator;
 
     private int _health;
 
     public bool CanMove => CanMoveCount == 0;
+    [HideInInspector]
+    public Transform SpawnPoint;
     [HideInInspector]
     public int CanMoveCount;
     [HideInInspector]
     public CharacterGrab GrabbedBy;
     [HideInInspector]
     public Team Team;
+    private int _id;
 
     private void Awake()
     {
@@ -48,6 +54,7 @@ public class Character: MonoBehaviour
         #endregion
 
         s_playerCount++;
+        _id = s_playerCount;
 
         name = this.GetType().Name + " " + s_playerCount;
 
@@ -57,7 +64,23 @@ public class Character: MonoBehaviour
 
         _playerTag.text = "P." + s_playerCount;
         _playerTag.color = s_playerCount % 2 == 1 ? Color.blue : Color.red;
+
+        GameObject model = GameObject.Instantiate(Models[_id - 1], transform);
+        model.transform.localPosition = new Vector3(0, -1, 0);
+        model.transform.rotation = Quaternion.Euler(0, 120, 0);
+        model.transform.localScale = Vector3.one * 2.25f;
+
+        Animator = model.GetComponent<Animator>();
+        GetComponent<CharacterMovement>().RotateModel = model.transform;
     }
+
+    private void Start()
+    {
+        GameManager.Instance.AddPlayer(this);
+        SpawnPoint = GameManager.Instance.Spawnpoints[_id-1];
+        transform.position = SpawnPoint.position;
+    }
+
     public void OnHit()
     {
         if (TryGetComponent(out CharacterStun stun) && stun.Stunned) return; // Don't take damage when stunned
@@ -101,7 +124,7 @@ public class Character: MonoBehaviour
         {
             grab.Drop();
         }
-        transform.position = new Vector3(0, 5, 0);
+        transform.position = SpawnPoint.position;
         _rb.velocity = Vector3.zero;
     }
 }

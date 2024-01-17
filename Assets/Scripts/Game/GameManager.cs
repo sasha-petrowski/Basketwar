@@ -20,6 +20,9 @@ public class GameManager : MonoBehaviour
     [Header("Game")]
     public int GameTime = 60;
 
+    [Header("Refs Spawn")]
+    public List<Transform> Spawnpoints;
+
     [Header("Refs UI")]
     [SerializeField]
     private TextMeshProUGUI _textBlue;
@@ -27,6 +30,8 @@ public class GameManager : MonoBehaviour
     private TextMeshProUGUI _textRed;
     [SerializeField]
     private TextMeshProUGUI _textTime;
+    [SerializeField]
+    private TextMeshProUGUI _textJoin;
 
     [Header("Refs Win")]
     [SerializeField]
@@ -40,10 +45,8 @@ public class GameManager : MonoBehaviour
     private float _timeLeft;
     public bool Overtime { get; private set; } = false;
 
-    private void Start()
-    {
-        StartGame();
-    }
+    private List<Character> _characterList = new List<Character>();
+
     private void Update()
     {
         if (_started & !_finished)
@@ -56,7 +59,7 @@ public class GameManager : MonoBehaviour
             }
             else
             {
-                _textTime.text = "Time Left : " + Mathf.FloorToInt(_timeLeft / 60) + ":" + Mathf.FloorToInt(_timeLeft % 60);
+                _textTime.text = Mathf.FloorToInt(_timeLeft / 60) + ":" + Mathf.FloorToInt(_timeLeft % 60);
             }
 
             if(_timeLeft <= 0 && ! Overtime)
@@ -88,6 +91,12 @@ public class GameManager : MonoBehaviour
     }
     public void StartGame()
     {
+        foreach(Character character in _characterList)
+        {
+            character.CanMoveCount--;
+        }
+        _textJoin.gameObject.SetActive(false);
+
         _started = true;
         _timeLeft = GameTime;
     }
@@ -104,6 +113,16 @@ public class GameManager : MonoBehaviour
                 _scoreRed += score;
                 _textRed.text = _scoreRed.ToString();
                 break;
+        }
+    }
+
+    public void AddPlayer(Character character)
+    {
+        _characterList.Add(character);
+        character.CanMoveCount++;
+        if (_characterList.Count == 4)
+        {
+            StartGame();
         }
     }
 }

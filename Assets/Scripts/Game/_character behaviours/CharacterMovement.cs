@@ -38,9 +38,9 @@ public class CharacterMovement : MonoBehaviour
     [Header("Refs")]
     [SerializeField]
     private ColliderUtility _groundCollider;
-    [SerializeField]
-    private Transform _rotateModel;
 
+    [HideInInspector]
+    public Transform RotateModel;
 
     // Logic variables
     private int _direction;
@@ -89,10 +89,10 @@ public class CharacterMovement : MonoBehaviour
     }
     public void Move()
     {
-        float angle = _rotateModel.eulerAngles.y;
+        float angle = RotateModel.eulerAngles.y;
         float target = _displayAngle * _direction;
 
-        _rotateModel.eulerAngles = new Vector3(0, Mathf.LerpAngle(angle, target, Time.deltaTime * _turnSpeed), 0);
+        RotateModel.eulerAngles = new Vector3(0, Mathf.LerpAngle(angle, target, Time.deltaTime * _turnSpeed), 0);
 
         Character.Animator.SetBool(AnimationVar.IsRunning, true);
         if (_rb.velocity.x * _direction > MaxSpeed) return; // don't accelerate over max speed
